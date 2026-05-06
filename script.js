@@ -114,12 +114,31 @@ function startFireworks() {
       let angle = Math.random() * 2 * Math.PI;
       let dist = Math.random() * 100;
 
-      p.animate([
-        { transform: "translate(0,0)", opacity: 1 },
-        { transform: `translate(${Math.cos(angle)*dist}px, ${Math.sin(angle)*dist}px)`, opacity: 0 }
-      ], { duration: 1000 });
+      p.animate(
+        [
+          { transform: "translate(0,0)", opacity: 1 },
+          { transform: `translate(${Math.cos(angle) * dist}px, ${Math.sin(angle) * dist}px)`, opacity: 0 }
+        ],
+        { duration: 1000 }
+      );
 
       setTimeout(() => p.remove(), 1000);
     }
   }, 600);
 }
+
+function openBox() {
+  const box = document.querySelector(".gift-box");
+  if (!box) return;
+
+  if (!box.classList.contains("open")) {
+    box.classList.add("open");
+
+    setTimeout(() => {
+      const popup = document.getElementById("popup");
+      if (popup) popup.classList.add("show");
+      createConfetti(); // keep your confetti 🎉
+    }, 700);
+  }
+}
+
