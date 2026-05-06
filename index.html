@@ -6,48 +6,60 @@
   <title>Happy Birthday Agnes 🎉</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body class="bg-animate">
+<body>
 
   <!-- MUSIC -->
-  <audio id="bgMusic" loop preload="auto" data-audio>
+  <audio id="bgMusic" loop preload="auto">
     <source src="music.mp3" type="audio/mpeg" />
   </audio>
 
-  <!-- PAGE 1 -->
+  <!-- PAGE 1 (BLACK SCREEN) -->
   <section class="page active" id="page1">
-    <h1 class="title">🎉 Happy Birthday <span class="name">AGNES</span> ❤️</h1>
-    <p class="intro">I have something special for you...</p>
-    <button type="button" onclick="nextPage()">Start the Surprise 🎁</button>
+    <div class="center">
+      <h1 class="intro-title">Happy Birthday</h1>
+      <button id="enterBtn" type="button">Click Me</button>
+    </div>
   </section>
 
-  <!-- PAGE 2 -->
+  <!-- PAGE 2 (CLICK BOX REVEAL) -->
   <section class="page" id="page2">
-    <h1>Dear Agnes ❤️</h1>
-    <p id="typedMessage" class="text typing"></p>
-    <button type="button" onclick="nextPage()">Next ➡️</button>
+    <div class="center">
+      <div id="revealBox" class="reveal-box" role="button" tabindex="0" aria-label="Reveal birthday box">
+        <div class="reveal-hint">Tap to reveal</div>
+        <div class="reveal-text" id="revealText">HAPPY 19TH BIRTHDAY AGNES</div>
+      </div>
+      <button type="button" class="next-btn" onclick="nextPage()">Next ➡️</button>
+    </div>
   </section>
 
-  <!-- PAGE 3 -->
+  <!-- PAGE 3 (BIRTHDAY LETTER) -->
   <section class="page" id="page3">
-    <h1>Cute Things & Places ✨</h1>
-    <div class="gallery-box" data-gallery>
-      <img src="cute1.jpg" class="gallery" data-gallery-item alt="Cute 1" loading="lazy" />
-      <img src="cute2.jpg" class="gallery" data-gallery-item alt="Cute 2" loading="lazy" />
+    <div class="card">
+      <h2 class="page-title">A Birthday Letter 💌</h2>
+      <p id="typedMessage" class="letter typing"></p>
+      <button type="button" class="next-btn" onclick="nextPage()">Next ➡️</button>
     </div>
-    <button type="button" onclick="nextPage()">Next ➡️</button>
   </section>
 
-  <!-- PAGE 4 -->
+  <!-- PAGE 4 (BEST PHOTOS) -->
   <section class="page" id="page4">
-    <h1>Beautiful Memories 💖</h1>
-    <div class="gallery-box" data-gallery>
-      <img src="her1.jpg" class="gallery" data-gallery-item alt="Memory 1" loading="lazy" />
-      <img src="her2.jpg" class="gallery" data-gallery-item alt="Memory 2" loading="lazy" />
+    <div class="card">
+      <h2 class="page-title">Her Best Photos ✨</h2>
+      <div class="gallery-grid" data-gallery>
+        <img src="her1.jpg" class="gallery" data-gallery-item alt="Best photo 1" loading="lazy" />
+        <img src="her2.jpg" class="gallery" data-gallery-item alt="Best photo 2" loading="lazy" />
+        <img src="cute1.jpg" class="gallery" data-gallery-item alt="Best photo 3" loading="lazy" />
+        <img src="cute2.jpg" class="gallery" data-gallery-item alt="Best photo 4" loading="lazy" />
+      </div>
+      <button type="button" class="next-btn" onclick="nextPage()">Next ➡️</button>
     </div>
+  </section>
 
-    <h2 class="final-text">recieve much love from JOE . LIVE MORE TO EXPERIENCE MORE ❤️
-      My God bless your life.
-    </h2>
+  <!-- PAGE 5 (BLESSING) -->
+  <section class="page" id="page5">
+    <div class="center">
+      <h2 class="blessing">MAY GOD BLESS YOU</h2>
+    </div>
   </section>
 
   <script src="script.js"></script>

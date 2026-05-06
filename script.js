@@ -1,66 +1,28 @@
 let currentPage = 1;
-const totalPages = 4;
+const totalPages = 5;
 
-const audio = document.getElementById("bgMusic");
-const pages = document.querySelectorAll(".page");
+const pages = document.querySelectorAll('.page');
+const typedEl = document.getElementById('typedMessage');
 
-let musicReady = false;
-
-function setupAudio() {
-  if (!audio) return;
-
-  try {
-    audio.volume = 0.5;
-  } catch (_) {}
-
-  // If the file is missing, disable music gracefully.
-  audio.addEventListener("error", () => {
-    musicReady = false;
-  });
-
-  audio.addEventListener("canplaythrough", () => {
-    musicReady = true;
-  });
-}
-
-// MUSIC (persistent start)
-function startMusic() {
-  if (!audio) return;
-
-  audio.play().catch(() => {
-    // iOS/Safari usually needs a user gesture.
-    document.body.addEventListener(
-      "click",
-      () => {
-        audio.play().catch(() => {});
-      },
-      { once: true }
-    );
-  });
-}
-
-// PAGE SWITCHER
 function showPage(pageNumber) {
-  pages.forEach(p => p.classList.remove("active"));
+  pages.forEach(p => p.classList.remove('active'));
+  const pageEl = document.getElementById('page' + pageNumber);
+  if (pageEl) pageEl.classList.add('active');
 
-  const pageEl = document.getElementById("page" + pageNumber);
-  if (pageEl) pageEl.classList.add("active");
-
-  if (pageNumber === 2) startTyping();
+  // Start typing on page 3
+  if (pageNumber === 3) startTyping();
 }
 
-// NEXT BUTTON LOGIC
 function nextPage() {
   currentPage++;
   if (currentPage > totalPages) currentPage = totalPages;
   showPage(currentPage);
-  startMusic();
 }
 
 // TYPING EFFECT
-function typeText(element, text, speed = 40) {
+function typeText(element, text, speed = 35) {
   let i = 0;
-  element.textContent = "";
+  element.textContent = '';
 
   function typing() {
     if (i < text.length) {
@@ -73,40 +35,90 @@ function typeText(element, text, speed = 40) {
   typing();
 }
 
+let typingDone = false;
 function startTyping() {
-  const message =
-    "Happy Birthday! 🎉 I just want to tell you how special you are to me as your cousin. You bring so much joy, laughter, and happiness. I wish you success, love, and everything beautiful in life 💖";
+  if (!typedEl || typingDone) return;
 
-  const el = document.getElementById("typedMessage");
-  if (el && !el.dataset.done) {
-    typeText(el, message);
-    el.dataset.done = "true";
+  const message =
+    "Happy 19th Birthday, Agnes!\n\nToday I just want to remind you how special you are. May your journey be filled with joy, growth, and amazing people around you. Keep shining and never lose faith—God has great plans for you.\n\nWith love, your cousin 💖";
+
+  typeText(typedEl, message);
+  typingDone = true;
+}
+
+// REVEAL BOX
+function initRevealBox() {
+  const box = document.getElementById('revealBox');
+  const revealText = document.getElementById('revealText');
+  const btn = document.getElementById('enterBtn');
+
+  function reveal() {
+    if (!box || !revealText) return;
+    box.classList.add('revealed');
+    revealText.textContent = 'HAPPY 19TH BIRTHDAY AGNES';
+    // Hide hint if any
+    const hint = box.querySelector('.reveal-hint');
+    if (hint) hint.style.display = 'none';
+  }
+
+  if (btn) {
+    btn.addEventListener('click', () => {
+      currentPage = 2;
+      showPage(2);
+    });
+  }
+
+  if (box) {
+    box.addEventListener('click', reveal);
+    box.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        reveal();
+      }
+    });
   }
 }
 
-function hideBrokenImages() {
-  const imgs = document.querySelectorAll("img[data-gallery-item]");
-  imgs.forEach(img => {
-    img.addEventListener("error", () => {
-      // If image fails (404), hide it so the rest of the page still renders.
-      img.style.display = "none";
+// MUSIC (best-effort, graceful)
+function setupMusic() {
+  const audio = document.getElementById('bgMusic');
+  if (!audio) return;
 
-      const gallery = img.closest("[data-gallery]");
-      if (gallery) {
-        // If both images fail, hide the container.
-        const visible = Array.from(gallery.querySelectorAll("img")).some(i => i.style.display !== "none");
-        if (!visible) gallery.dataset.allHidden = "true";
-      }
+  audio.volume = 0.4;
+  audio.addEventListener('error', () => {
+    // ignore
+  });
+
+  // Try autoplay, but allow click fallback.
+  audio.play().catch(() => {
+    document.body.addEventListener(
+      'click',
+      () => {
+        audio.play().catch(() => {});
+      },
+      { once: true }
+    );
+  });
+}
+
+// Hide broken images (so layout still works)
+function hideBrokenImages() {
+  const imgs = document.querySelectorAll('img[data-gallery-item]');
+  imgs.forEach(img => {
+    img.addEventListener('error', () => {
+      img.style.display = 'none';
     });
   });
 }
 
-// INIT
-window.addEventListener("DOMContentLoaded", () => {
-  setupAudio();
-  hideBrokenImages();
-
+window.addEventListener('DOMContentLoaded', () => {
+  // initial
   showPage(1);
-  startMusic();
+  initRevealBox();
+  setupMusic();
+  hideBrokenImages();
 });
+
+// Expose for onclick attributes
+window.nextPage = nextPage;
 
