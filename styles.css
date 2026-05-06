@@ -4,7 +4,27 @@ body {
   color: #fff;
   overflow: hidden;
   background: #000;
+  min-height: 100vh;
 }
+
+/* Dynamic backgrounds per page */
+#page2 { background: #0b0b1a; }
+#page3 { background: #160b2a; }
+#page4 { background: #071b2a; }
+#page5 { background: #1a0b0b; }
+
+#page2.active,
+#page3.active,
+#page4.active,
+#page5.active {
+  animation: pageGlow 6s infinite alternate;
+}
+
+@keyframes pageGlow {
+  0% { filter: saturate(1) brightness(1); }
+  100% { filter: saturate(1.25) brightness(1.12); }
+}
+
 
 /* Pages */
 .page {
