@@ -4,19 +4,47 @@ const totalPages = 4;
 const audio = document.getElementById("bgMusic");
 const pages = document.querySelectorAll(".page");
 
-// MUSIC (persistent start)
-audio.volume = 0.5;
+let musicReady = false;
 
+function setupAudio() {
+  if (!audio) return;
+
+  try {
+    audio.volume = 0.5;
+  } catch (_) {}
+
+  // If the file is missing, disable music gracefully.
+  audio.addEventListener("error", () => {
+    musicReady = false;
+  });
+
+  audio.addEventListener("canplaythrough", () => {
+    musicReady = true;
+  });
+}
+
+// MUSIC (persistent start)
 function startMusic() {
+  if (!audio) return;
+
   audio.play().catch(() => {
-    document.body.addEventListener("click", () => audio.play(), { once: true });
+    // iOS/Safari usually needs a user gesture.
+    document.body.addEventListener(
+      "click",
+      () => {
+        audio.play().catch(() => {});
+      },
+      { once: true }
+    );
   });
 }
 
 // PAGE SWITCHER
 function showPage(pageNumber) {
   pages.forEach(p => p.classList.remove("active"));
-  document.getElementById("page" + pageNumber).classList.add("active");
+
+  const pageEl = document.getElementById("page" + pageNumber);
+  if (pageEl) pageEl.classList.add("active");
 
   if (pageNumber === 2) startTyping();
 }
@@ -46,7 +74,8 @@ function typeText(element, text, speed = 40) {
 }
 
 function startTyping() {
-  const message = "Happy Birthday! 🎉 I just want to tell you how special you are to me as your cousin. You bring so much joy, laughter, and happiness. I wish you success, love, and everything beautiful in life 💖";
+  const message =
+    "Happy Birthday! 🎉 I just want to tell you how special you are to me as your cousin. You bring so much joy, laughter, and happiness. I wish you success, love, and everything beautiful in life 💖";
 
   const el = document.getElementById("typedMessage");
   if (el && !el.dataset.done) {
@@ -55,8 +84,29 @@ function startTyping() {
   }
 }
 
+function hideBrokenImages() {
+  const imgs = document.querySelectorAll("img[data-gallery-item]");
+  imgs.forEach(img => {
+    img.addEventListener("error", () => {
+      // If image fails (404), hide it so the rest of the page still renders.
+      img.style.display = "none";
+
+      const gallery = img.closest("[data-gallery]");
+      if (gallery) {
+        // If both images fail, hide the container.
+        const visible = Array.from(gallery.querySelectorAll("img")).some(i => i.style.display !== "none");
+        if (!visible) gallery.dataset.allHidden = "true";
+      }
+    });
+  });
+}
+
 // INIT
-window.onload = () => {
+window.addEventListener("DOMContentLoaded", () => {
+  setupAudio();
+  hideBrokenImages();
+
   showPage(1);
   startMusic();
-};
+});
+

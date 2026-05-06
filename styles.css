@@ -11,11 +11,21 @@ body {
 }
 
 @keyframes bgChange {
-  0% { background: #ff0080; }
-  25% { background: #7928ca; }
-  50% { background: #00c6ff; }
-  75% { background: #ff8c00; }
-  100% { background: #ff0080; }
+  0% {
+    background: #ff0080;
+  }
+  25% {
+    background: #7928ca;
+  }
+  50% {
+    background: #00c6ff;
+  }
+  75% {
+    background: #ff8c00;
+  }
+  100% {
+    background: #ff0080;
+  }
 }
 
 /* Pages */
@@ -63,6 +73,13 @@ button {
 .gallery-box {
   display: flex;
   gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 90vw;
+}
+
+.gallery-box[data-all-hidden="true"] {
+  display: none;
 }
 
 .gallery {
@@ -84,3 +101,4 @@ button {
   margin-top: 20px;
   color: #ff0080;
 }
+
