@@ -1,124 +1,125 @@
-let currentPage = 1;
+let currentPage = 0;
 const totalPages = 5;
 
-const pages = document.querySelectorAll('.page');
-const typedEl = document.getElementById('typedMessage');
+const audio = document.getElementById("bgMusic");
 
-function showPage(pageNumber) {
-  pages.forEach(p => p.classList.remove('active'));
-  const pageEl = document.getElementById('page' + pageNumber);
-  if (pageEl) pageEl.classList.add('active');
+/* PASSWORD */
+function checkPassword() {
+  const pass = document.getElementById("passwordInput").value;
 
-  // Start typing on page 3
-  if (pageNumber === 3) startTyping();
+  if (pass === "agnes19") {
+    showPage(1);
+  } else {
+    document.getElementById("error").textContent = "Wrong password!";
+  }
 }
 
+/* START */
+function startExperience() {
+  audio.play();
+  showPage(2);
+}
+
+/* PAGE SWITCH */
+function showPage(page) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+
+  if (page === 0) {
+    document.getElementById("passwordPage").classList.add("active");
+  } else {
+    document.getElementById("page" + page).classList.add("active");
+  }
+
+  currentPage = page;
+
+  if (page === 3) startTyping();
+  if (page === 5) startFireworks();
+}
+
+/* NEXT */
 function nextPage() {
-  currentPage++;
-  if (currentPage > totalPages) currentPage = totalPages;
-  showPage(currentPage);
+  if (currentPage < totalPages) {
+    showPage(currentPage + 1);
+  }
 }
 
-// TYPING EFFECT
-function typeText(element, text, speed = 35) {
-  let i = 0;
-  element.textContent = '';
+/* POPUP */
+function openBox() {
+  document.getElementById("popup").classList.add("show");
+  createConfetti();
+}
 
-  function typing() {
+/* CONFETTI */
+function createConfetti() {
+  for (let i = 0; i < 40; i++) {
+    let c = document.createElement("div");
+    c.style.position = "absolute";
+    c.style.width = "5px";
+    c.style.height = "5px";
+    c.style.background = "yellow";
+    c.style.left = Math.random() * 100 + "vw";
+    c.style.top = Math.random() * 100 + "vh";
+    document.body.appendChild(c);
+
+    setTimeout(() => c.remove(), 2000);
+  }
+}
+
+/* TYPING */
+function startTyping() {
+  const text = "Happy Birthday Agnes 🎉 I wish you happiness, success and blessings always 💖";
+  const el = document.getElementById("typedText");
+
+  if (el.innerHTML !== "") return;
+
+  let i = 0;
+  function type() {
     if (i < text.length) {
-      element.textContent += text.charAt(i);
+      el.innerHTML += text.charAt(i);
       i++;
-      setTimeout(typing, speed);
+      setTimeout(type, 40);
     }
   }
-
-  typing();
+  type();
 }
 
-let typingDone = false;
-function startTyping() {
-  if (!typedEl || typingDone) return;
+/* HEARTS */
+setInterval(() => {
+  let heart = document.createElement("div");
+  heart.classList.add("heart");
+  heart.innerHTML = "❤️";
+  heart.style.left = Math.random() * 100 + "vw";
+  document.body.appendChild(heart);
 
-  const message =
-    "Happy 19th Birthday, Agnes!\n\nToday I just want to remind you how special you are. May your journey be filled with joy, growth, and amazing people around you. Keep shining and never lose faith—God has great plans for you.\n\nWith love, your cousin 💖";
+  setTimeout(() => heart.remove(), 5000);
+}, 300);
 
-  typeText(typedEl, message);
-  typingDone = true;
+/* FIREWORKS */
+function startFireworks() {
+  setInterval(() => {
+    let x = Math.random() * window.innerWidth;
+    let y = Math.random() * window.innerHeight;
+
+    for (let i = 0; i < 20; i++) {
+      let p = document.createElement("div");
+      p.style.position = "absolute";
+      p.style.width = "4px";
+      p.style.height = "4px";
+      p.style.background = "white";
+      p.style.left = x + "px";
+      p.style.top = y + "px";
+
+      document.body.appendChild(p);
+
+      let angle = Math.random() * 2 * Math.PI;
+      let dist = Math.random() * 100;
+
+      p.animate([
+        { transform: "translate(0,0)", opacity: 1 },
+        { transform: `translate(${Math.cos(angle)*dist}px, ${Math.sin(angle)*dist}px)`, opacity: 0 }
+      ], { duration: 1000 });
+
+      setTimeout(() => p.remove(), 1000);
+    }
+  }, 600);
 }
-
-// REVEAL BOX
-function initRevealBox() {
-  const box = document.getElementById('revealBox');
-  const revealText = document.getElementById('revealText');
-  const btn = document.getElementById('enterBtn');
-
-  function reveal() {
-    if (!box || !revealText) return;
-    box.classList.add('revealed');
-    revealText.textContent = 'HAPPY 19TH BIRTHDAY AGNES';
-    // Hide hint if any
-    const hint = box.querySelector('.reveal-hint');
-    if (hint) hint.style.display = 'none';
-  }
-
-  if (btn) {
-    btn.addEventListener('click', () => {
-      currentPage = 2;
-      showPage(2);
-    });
-  }
-
-  if (box) {
-    box.addEventListener('click', reveal);
-    box.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        reveal();
-      }
-    });
-  }
-}
-
-// MUSIC (best-effort, graceful)
-function setupMusic() {
-  const audio = document.getElementById('bgMusic');
-  if (!audio) return;
-
-  audio.volume = 0.4;
-  audio.addEventListener('error', () => {
-    // ignore
-  });
-
-  // Try autoplay, but allow click fallback.
-  audio.play().catch(() => {
-    document.body.addEventListener(
-      'click',
-      () => {
-        audio.play().catch(() => {});
-      },
-      { once: true }
-    );
-  });
-}
-
-// Hide broken images (so layout still works)
-function hideBrokenImages() {
-  const imgs = document.querySelectorAll('img[data-gallery-item]');
-  imgs.forEach(img => {
-    img.addEventListener('error', () => {
-      img.style.display = 'none';
-    });
-  });
-}
-
-window.addEventListener('DOMContentLoaded', () => {
-  // initial
-  showPage(1);
-  initRevealBox();
-  setupMusic();
-  hideBrokenImages();
-});
-
-// Expose for onclick attributes
-window.nextPage = nextPage;
-
