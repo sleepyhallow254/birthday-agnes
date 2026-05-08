@@ -7,7 +7,7 @@ const audio = document.getElementById("bgMusic");
 function checkPassword() {
   const pass = document.getElementById("passwordInput").value;
 
-  if (pass === "agnes19") {
+  if (pass === "0824135AG") {
     showPage(1);
   } else {
     document.getElementById("error").textContent = "Wrong password!";
