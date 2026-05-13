@@ -2,66 +2,133 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Birthday Agnes </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday Agnes 🎉</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
+<!-- STARS -->
+<div class="stars"></div>
+
+<!-- MUSIC -->
 <audio id="bgMusic" loop>
   <source src="music.mp3" type="audio/mpeg">
 </audio>
 
-<!-- PASSWORD PAGE -->
-<section class="page active" id="passwordPage">
-  <h2>Enter Password </h2>
-  <input type="password" id="passwordInput" placeholder="Enter password">
-  <button onclick="checkPassword()">Enter</button>
+<!-- INTRO -->
+<section class="page active" id="introPage">
+  <h1 class="intro-text">
+    Someone special has a message for you ❤️
+  </h1>
+</section>
+
+<!-- PASSWORD -->
+<section class="page" id="passwordPage">
+
+  <h1>Enter Password 🔒</h1>
+
+  <input
+    type="password"
+    id="passwordInput"
+    placeholder="Enter password"
+  >
+
+  <button onclick="checkPassword()">
+    Enter
+  </button>
+
   <p id="error"></p>
+
 </section>
 
-<!-- PAGE 1 -->
+<!-- GIFT -->
 <section class="page" id="page1">
-  <button class="click-btn" onclick="startExperience()">CLICK ME </button>
-</section>
 
-<!-- PAGE 2 -->
-<section class="page" id="page2">
-
-  <div class="gift-box" onclick="openBox()">
-    <div class="lid"></div>
-    <div class="box-body"></div>
+  <div class="gift-box" onclick="openMainGift()">
+    <img src="box.jfif" alt="Gift Box" class="gift-image">
   </div>
 
-  <div id="popup" class="popup">
+  <div id="birthdayPopup" class="birthday-popup">
     🎉 HAPPY 19TH BIRTHDAY AGNES 🎉
   </div>
 
-  <button class="next-btn" onclick="nextPage()">Next ➡️</button>
 </section>
 
-<!-- PAGE 3 -->
-<section class="page" id="page3">
-  <h1>Dear Agnes </h1>
+<!-- LETTER -->
+<section class="page" id="page2">
+
+  <h1>Dear Agnes ❤️</h1>
+
   <p id="typedText" class="letter"></p>
-  <button class="next-btn" onclick="nextPage()">Next ➡️</button>
+
+  <button class="next-btn" onclick="nextPage()">
+    Next ➡️
+  </button>
+
 </section>
 
-<!-- PAGE 4 -->
-<section class="page" id="page4">
-  <h1>Your Beautiful Moments </h1>
-  <div class="gallery">
-    <img src="her1.jpg" alt="Photo 1">
-    <img src="her2.jpg" alt="Photo 2">
-    <img src="her3.jpg" alt="Photo 3">
-    <img src="her4.jpg" alt="Photo 4">
-    <img src="her5.jpg" alt="Photo 5">
+<!-- SPECIAL -->
+<section class="page" id="page3">
+
+  <h1>Things I Appreciate About You 💖</h1>
+
+  <div class="special-list">
+    <p>✨ Your smile</p>
+    <p>✨ Your kindness</p>
+    <p>✨ Your energy</p>
+    <p>✨ The comfort you bring</p>
+    <p>✨ The memories we share</p>
   </div>
-  <button class="next-btn" onclick="nextPage()">Next ➡️</button>
+
+  <button class="next-btn" onclick="nextPage()">
+    Next ➡️
+  </button>
+
 </section>
 
-<!-- PAGE 5 -->
+<!-- SLIDESHOW -->
+<section class="page" id="page4">
+
+  <h1>Your Beautiful Moments 📸</h1>
+
+ <div class="slideshow-container">
+
+  <img src="her1.jpg" class="slide active-slide">
+
+  <img src="her2.jpg" class="slide">
+
+  <img src="her3.jpg" class="slide">
+
+  <img src="her4.jpg" class="slide">
+
+  <img src="her5.jpg" class="slide">
+
+</div>
+
+  <button class="next-btn" onclick="nextPage()">
+    Next ➡️
+  </button>
+
+</section>
+
+<!-- FINAL -->
 <section class="page" id="page5">
-  <h1 class="final">MAY GOD BLESS YOU </h1>
+
+  <h1 class="final-text">
+    MAY GOD BLESS YOU 🙏
+  </h1>
+
+  <h2 class="age-text">19 ✨</h2>
+
+  <div class="secret-heart" onclick="showSecretMessage()">
+    ❤️
+  </div>
+
+  <p id="secretMessage">
+    You are truly special to me ❤️
+  </p>
+
 </section>
 
 <script src="script.js"></script>
